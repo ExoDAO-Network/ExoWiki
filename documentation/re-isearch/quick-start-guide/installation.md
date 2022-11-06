@@ -41,7 +41,7 @@ cd re-Isearch/build/
 Run the Makefile
 
 ```bash
-Make
+make
 ```
 
 </details>
@@ -53,7 +53,7 @@ Make
 If you want to use plugins (e.g. for indexing PDFs or other (third party) doctypes), install them using
 
 ```bash
-Make Plugins
+make Plugins
 ```
 
 </details>
