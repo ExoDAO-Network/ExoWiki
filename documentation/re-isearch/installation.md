@@ -24,10 +24,10 @@
 
 <summary>Clone the Repository</summary>
 
-Run the following command in your terminal
+Pull source from `master` using
 
 ```bash
-$ git clone https://github.com/re-Isearch/re-Isearch.git
+git clone https://github.com/re-Isearch/re-Isearch.git
 ```
 
 </details>
