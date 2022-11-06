@@ -14,17 +14,16 @@ The engine for text does not use a conventional word-level inverted index.
 
 **Normative** inverted index structures are composed of two elements: the vocabulary and the occurrences. The vocabulary is the set of all different words in the text. By its very nature it needs to limit the length of possible words. For popular inverted indexes this is typically some length under 255 (some even under 64). For each word in the vocabulary the index stores the documents which contain that word (and perhaps its location either on word or block level). These data structures tend to be quite compact. Using document addressing indexes can require only 20-40% of text size. Since frequent occurances demand disproportionate space (and also slow the system) they tend to use stopword lists (or frequency limits) to exclude frequent words from the index. Word addressing also significantly increases size so many system keep to document addressing and build individual inverted indexes for each field to be searched in structured documents. Word addressing and especially individual inverted indexes have a serious impact on indexing performance so it is generally best practice with inverted indexes to try to keep these to a minimum.
 
-\
 
 
 Limiting the length of words in the vocabulary might make perfect sense for the english language but in some languages like German with its myriad of compound words it can place limitations. With 80 characters the German word „Donaudampfschifffahrts-elektrizitätenhauptbetriebswerkbauunterbeamtengesellschaft“, the 63-character „Rindfleischetikettierungsüberwachungsaufgabenübertragungsgesetz“ or even the 36-character „Kraftfahrzeug-Haftpflichtversicherung“ surpases the length of the most popularly cited long word in the English language „antidisestablishmentarianism“. These are all dwarfed by the 189819 character „methionylthreonylthreonylglu...“
 
-\
+
 
 
 Excluding stopwords too can make sense but sometimes these frequent words are significant. Beyond the often cited „To be or not to be“ we have in some mixed language text words that can fall through the cracks. Words that one might argue are frequent in one but of profound significance in others are not rare. The word „war“ (in German equivalent to English „was“ which itself in German is the equivalent of „what“) for example. We also have words that are commonly found in stopword lists that might be extremely significant, for example „IT“ (commonly used for information technology), „WHO“ (which can also refer to the World Health Organization), etc.
 
-\
+
 
 
 Limiting the structure to a few fields can in many use cases make sense but part of the ambitions of the NoSQL movement are to not require any predefined schemas and to be able to search for things that one did not design apriori for. Demanding a choice on structure seem to go against the desires for a highly flexible data model that doesn’t need, as with relational databases, to be immediately defined.&#x20;
@@ -33,7 +32,7 @@ Limiting the structure to a few fields can in many use cases make sense but part
 
 So with an aim to allowing for utmost freedom to work with a collection of hetrogeneous structured and “unstructured data” **we choose another technological approach**. Instead of building a graph layer on-top of an inverted index, we implement an algorithm inspired by Gaston H. Gonnet and Ricardo A. Baeza-Yates‘ NEW INDICES FOR TEXT: PAT TREES AND PAT ARRAYS. Text input is viewed as a semi-infinite string (stream of characters). This delivers immediately an address for every word (the address encodes both the identity of the file input and its offset in the file) and does not need to maintain a catalogue of terms (index). The disadvantage is its poor I/O. The documents need to be opened and read for each work during search. We address this with a simple yet powerful trick: we cache in a kind of index the first n-characters of unique words and map that to adresses in our table that organizes terms to addresses in the individual records. This affords a search speed nearly en-par with an inverted index but without its significant downsides.  Performance speed is effectively I/O constrained, limited primarily by computer memory and disk storage speed-- faster RAM and faster SSDs lead to faster performance more than faster CPUs which allow for clusters to be built with low cost/low power CPUs. Since we are only caching the first n-characters we can index words of unlimited length. Since we have a fixed length we can map the SIS cache directly into virtual address space and perform „in-memory“ binary search.  Since we map into an index of addresses we have no limitations on the frequency of terms. The space overhead is just its address (either 32-bit or 64-bit encoded). When the term length exceeds the length of the cache we open the file and read the term. To keep these system calls to a minimum we keep a cache of open file handles and memory map pointers. This typically results in the terms often being already in memory.  Since we store field information in yet another structure which just carries sorted start-end addresses we have no significant overhead for additional fields and can support complex structures and even overlap. While field search performance has a penalty compared to building an inverted index for each field since we have a complete address map we can walk through all the trees and at search time explore interdepencies at will. This lets us, for example, search for term in the same unnamed attribute (field) instance without knowing its path.
 
-\
+
 
 
 Since we are indexing records as parts of collections literally viewed as an infinite stream of characters, what constitutes a record and what can constitute a unit of retrieval can be quite dynamic. Allowing member records of a collection to have a shared root key we can find both collections as a search response but also digging deeper into the structure of the search (where the terms are located in a record) find relevant sub-elements. This allow for the development of search interfaces and applications that break with the mould of record or document level retrieval.
@@ -56,7 +55,7 @@ Services to handle the various document formats (ingest, parse, recognize start 
 
 A doctype needs to parse a document into records. Frequently documents consist of a single record but many don‘t. Many doctypes perform also an examination of the document or record to see if they might want to pass it to another doctype with more intimate knowledge about the format it thinks it may have detected. One doctype AUTODETECT is only about auto-detecting the input format. Doctypes exploit the registry to pass the input to another class. Somewhere down the chain a doctype takes responsibility—if only to process metadata should it fall throught the raster. The individual records are in turn parsed into their fields or attribute containers. It is also the job of a doctype to be able to read and decode the text stream in a record. For HTML, for example, this means decoding the HTML character entities. Some types may need to perform pre-processing and create an intermediate. SGML, for exmple, needs to be normalized. PDF needs to have its text rendered.
 
-\
+
 
 
 During search the doctypes continue to have jobs. They must be able to read the documents and prepare fragments to be compared in a suitable manner. With HTML this means, among other things, with its HTML character entities decoded and text normalized. It is also responsible for retrieval of information (document, record or parts thereof) or what we call presentation.
@@ -69,34 +68,34 @@ Since the engine is designed to support a wide range of heterogenous documents a
 
 Queries to the engine are done by a number of means: 1) RPN expressions 2) Infix (algebraic) 3) Relevant feedback (a reference to a fragment) 4) so called smart plain language queries. Smart queries try to interpret the query if its RPN or Infix or maybe just some terms. The logic for handling just terms is as-if it first searched for a literal expression, if not then tying to find the terms in a common leaf node in a records DOM, if not then AND‘d (Intersection of sets), if not then OR‘d (Union).&#x20;
 
-\
+
 
 
 While „Smart“ searches is for many normal users, power users tend to want to perform more precise queries. The iimplented nfix and RPN languages support fields and paths (like Xquery) as well as a very rich set of unary and binary operators and an assortment of modifiers (prefix and suffix). Since the engine supports a number of data types it includes a number of relations  <,>,>=,<=,<> whose semantics of depends upon the field datatype. These operators are all overloaded in the query language.
 
-\
+
 
 
 Terms are constructed as  \[\[path]\[relation]]searchterm\[\*]\[:n]. We support right and left truncated search as well as a combination of \* and ? For glob matching. This can be applied to path (fieldname) and searchterm alike. These can be connected by more than a dozen binary as well as a good dozen unary relational operators.
 
-\
+
 
 
 Internally all expressions are converted into a RPN (Reverse Polish Notation) and placed on stacks. Result sets from searches on terms on the stack are cached to try to prevent repeated searches. Caches may also be made persistent by using disk storage. This is useful for session oriented search and retrieval when used in stateless environments.
 
-\
+
 
 
 Since it is a true query language it is possible to write extremely ineffective and costly queries. There is a facility to give search expressions only a limited amount of „fuel“ to run. One can also explicitly select to use these partial results.
 
-\
+
 
 
 ### **Ranking (search results)**
 
 The set of elements (records) on a search response tends to be sorted by scores. There are a number of algorithms that tend to be used for scoring. The standard methods in the core engine are NoNormalization, CosineNormalization (Salton Tf-idf), MaxNormalization (weighted Cosine), LogNormalization (log cosine score), BytesNormalization (normalize frequency with a bias towards terms that are closer to one another) and CosineMetricNormalization. There is also normalization using a date bias (Newsrank).&#x20;
 
-\
+
 
 
 Scores and ranking can also be boosted by a number of progressions Linear, Inversion, LogLinear, LogInversion, Exponential, ExpInversion, Power and PowInversion.
@@ -113,34 +112,33 @@ For presentation the engine uses something called “Record Syntax” to define 
 
 We use OIDs (Object Identifiers) throughout instead of ad-hoc names for a number of request and response features to allow for easier integration with compliant systems. Example: For PDF we have the octet stream: 1.2.840.10003.5.109.1 while for SUTRS (effectively plain structured text) we have 1.2.840.10003.5.101
 
-\
+
 
 
 This is in the tree 1.2.840.10003 registered with ISO as the Z39-50 standard from ANSI (which has been also adopted by ISO 23950). The sub-node 5 is for Record Syntaxes (presentation).  101 is for SUTRS. 109 is for MIME types with 109.1 for PDF, 109.2 for Postscript, 109.3 for HTML etc.
 
 The use of the Z39.50 OID space is for rational, practical and historical reasons. Firstly ISO  23950 (identical in text to ANSI/NISO Z39.50-1995 except for certain style discrepancies between ISO and ANSI standards) remains the lingua franca for library systems, OPACS (Online Public Access Catalogues) and information federations (such as the various Geospatial data clearinghouses) worldwide. When we designed the standard within the ZIG (Z39.50 Interest Group) many of the features where designed to go beyond the library paradigm and for use in general search and retrieval within a range of federated architectures.
 
-\
 
 
-\
+
 
 
 ### **IB Query Language**&#x20;
 
 All parts of the query language are case insensitive apart from terms. Fields (paths) are case insensitive. While XML, for example, is case-sensitive, we are case insensitive. Should the same element name have different semantics (generally a very bad practice)  by case in the source it needs to be converted (e.g. with a prefix). &#x20;
 
-\
+
 
 
 Queries to the engine are done by a number of means: _1)_ RPN expressions _2)_ Infix (algebraic) _3)_ Relevant feedback (a reference to a fragment) _4)_ so called **smart** plain language queries _5)_ C++ _6)_ Via a bound language interface in Python or one of the other SWIG supported languages (Go, Guile, Java, Lua,  MzScheme, Ocaml, Octave, Perl, PHP, R. Ruby. Scilab. Tcl/Tk).
 
-\
+
 
 
 Smart queries try to interpret the query if its RPN or Infix or maybe just some terms. The logic for handling just terms is as-if it first searched for a literal expression, if not then tying to find the terms in a common leaf node in a records DOM, if not then AND‘d (Intersection of sets), if not then OR‘d (Union) but reduced to the number of words in the query.
 
-\
+
 
 
 Example: Searching in the collected works of Shakespeare:
@@ -153,19 +151,18 @@ Example: Searching in the collected works of Shakespeare:
 6. out out
 7. It finds a number of lines where “out out” is said such as “Out, out, Lucetta! that would be ill-favour'd” in \`The Two Gentlemen of Verona'. The confirmed query is: “out out”.
 
-\
 
 
 While „Smart“ searches is fantastic for many typical use cases (and why we developed it), power users tend to want to perform more precise queries. The implemented infix and RPN languages support fields and paths (like Xquery) as well as a very rich set of unary and binary operators and an assortment of modifiers (prefix and suffix). Since the engine supports a number of data types it includes a number of relations  /.<,>,>=,<=,<> whose semantics of depends upon the field datatype. These operators are all overloaded in the query language.
 
-\
+
 
 
 Terms are constructed as   **\[\[path]\[relation]]searchterm\[:n]**
 
 Example: title/design
 
-\
+
 
 
 Paths can be from the root ‘\’ (e.g. \\_record\metadata\\_title) or from any location (e.g. title or metadata\title)).  Paths can be specified with ‘/’ or ‘\’. To escape the special ‘/’ we use ‘\’, e.g \\/ to have ‘/’ without its special significance.
