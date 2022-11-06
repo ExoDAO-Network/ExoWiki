@@ -34,6 +34,6 @@ Make sure that re-Isearch is properly installed on your sytem. For detailied ins
 
 For more detailed information, check out the Design Document:
 
-{% content-ref url="design-document.md" %}
-[design-document.md](design-document.md)
+{% content-ref url="../handbook/design-document.md" %}
+[design-document.md](../handbook/design-document.md)
 {% endcontent-ref %}

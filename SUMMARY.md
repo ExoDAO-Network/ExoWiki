@@ -9,10 +9,12 @@
 ## Documentation
 
 * [🔎 re-Isearch](documentation/re-isearch/README.md)
-  * [Intro](documentation/re-isearch/intro.md)
-  * [⬇ Installation](documentation/re-isearch/installation.md)
-  * [🎂 Your First Search](documentation/re-isearch/your-first-search.md)
-  * [Design Document](documentation/re-isearch/design-document.md)
+  * [⏩ Quick Start Guide](documentation/re-isearch/quick-start-guide/README.md)
+    * [⬇ Installation](documentation/re-isearch/quick-start-guide/installation.md)
+    * [🎂 Your First Search](documentation/re-isearch/quick-start-guide/your-first-search.md)
+  * [📖 Handbook](documentation/re-isearch/handbook/README.md)
+    * [Intro](documentation/re-isearch/handbook/intro.md)
+    * [Design Document](documentation/re-isearch/handbook/design-document.md)
 * [✨ ExoDAO](documentation/exodao.md)
 
 ***
