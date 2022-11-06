@@ -10,7 +10,7 @@
 
 * [🔎 re-Isearch](documentation/re-isearch/README.md)
   * [Intro](documentation/re-isearch/intro.md)
-  * [Design](documentation/re-isearch/design.md)
+  * [Design Document](documentation/re-isearch/design-document.md)
 * [✨ ExoDAO](documentation/exodao.md)
 
 ***

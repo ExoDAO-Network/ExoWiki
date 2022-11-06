@@ -1,16 +1,15 @@
-# Design
+# Design Document
 
-**Architecture** (Brief sketch to understand the engine):&#x20;
+### **Architecture** (Brief sketch to understand the engine):&#x20;
 
-The **Core** engine
+#### The **Core** engine
 
 The core engine contains all the classes and methods (C++) to ingest documents, parse them, create indexes, store objects and provide search thereto. On a higher metalevel we have the engine kernel which provides the core indexing, search, retrieval and presentation services, manages objects and dispatches to handlers.
 
-**Basic Text Search Algorithm**
+#### **Basic Text Search Algorithm**
 
 The engine for text does not use a conventional word-level inverted index.
 
-\
 
 
 **Normative** inverted index structures are composed of two elements: the vocabulary and the occurrences. The vocabulary is the set of all different words in the text. By its very nature it needs to limit the length of possible words. For popular inverted indexes this is typically some length under 255 (some even under 64). For each word in the vocabulary the index stores the documents which contain that word (and perhaps its location either on word or block level). These data structures tend to be quite compact. Using document addressing indexes can require only 20-40% of text size. Since frequent occurances demand disproportionate space (and also slow the system) they tend to use stopword lists (or frequency limits) to exclude frequent words from the index. Word addressing also significantly increases size so many system keep to document addressing and build individual inverted indexes for each field to be searched in structured documents. Word addressing and especially individual inverted indexes have a serious impact on indexing performance so it is generally best practice with inverted indexes to try to keep these to a minimum.
@@ -39,21 +38,21 @@ So with an aim to allowing for utmost freedom to work with a collection of hetro
 
 Since we are indexing records as parts of collections literally viewed as an infinite stream of characters, what constitutes a record and what can constitute a unit of retrieval can be quite dynamic. Allowing member records of a collection to have a shared root key we can find both collections as a search response but also digging deeper into the structure of the search (where the terms are located in a record) find relevant sub-elements. This allow for the development of search interfaces and applications that break with the mould of record or document level retrieval.
 
-**Datatypes (object data types handled polymorphic to text)**
+### **Datatypes (object data types handled polymorphic to text)**
 
 Data types are handled by the core and extendable within code. Many of these are well known from standard schemas such as string, boolean, numerical, computed, date and many more motivated by user needs such as phonetic types. Milestone 1 (CORE) shall contain a large assortment including the possibility to install a callback and some local types. A list and some documentation of available types is available at runtimes as the system contains a rudimentary self documentation of the installed handlers.&#x20;
 
-**Object Indexes**  (data type handlers)
+### **Object Indexes**  (data type handlers)
 
 The indexer supports a number of datatypes. For example: strings (full text), numerical (IEEE floating), computed numerical, range of numbers, date, date-range, Geospatial n-ary bounding coordinates etc. This is handled by a data type registry. All data is stored as string (the octets defining the words/terms, e.g. xs:string or xs:normalizedString in XML schema jargon) and, if specified or determined, the specific object type. These different data types have their own for-purpose indexing structures.
 
 Some have also very special functions. The datatype TTL, for example,  is a numeric computed value for time-to-live in seconds. The same structures are used for another datatype called „expires“ but with the time-to-live associated with the record to define  record expiration. There are also a number of datatypes that use hash structures such as sound or phonetic hashes which have proven useful in name searches. All datatypes carry their own most basic documentation into the registry.
 
-**Doctypes** (Document handlers)
+### **Doctypes** (Document handlers)
 
 Services to handle the various document formats (ingest, parse, recognize start and end of records with multi-record file formats, recognize start and end of fields, decode encodings, convert and present) are handled by a so-called “doctype” system. These doctypes are built upon a base DOCTYPE class. They are managed and dispatched by a registry. All doctypes carry their own basic documentation (and tree heirarchy) when they register into the registry. We have both a growing collection of “built-in” types (provided with the core engine and covered by the same license and conditions as the rest of the engine) and “plugin-in” types. The latter are loadable at run-time. These loadable plug-ins can handle all or just partial services and are not just descendents of a built-in document handler class but also can pass control to other types not immediately in its class path. Milestone 1 shall contain some 60 formats including several multifunctional that transparently use confiigurable external conversion tools—for example OCR to process scanned documents or an image captioning tool to process photographs alongside the embedded metadata is readily implemented. All parsers have some self documentation available at runtime of their options and class tree.
 
-**Doctype functions**
+#### **Doctype functions**
 
 A doctype needs to parse a document into records. Frequently documents consist of a single record but many don‘t. Many doctypes perform also an examination of the document or record to see if they might want to pass it to another doctype with more intimate knowledge about the format it thinks it may have detected. One doctype AUTODETECT is only about auto-detecting the input format. Doctypes exploit the registry to pass the input to another class. Somewhere down the chain a doctype takes responsibility—if only to process metadata should it fall throught the raster. The individual records are in turn parsed into their fields or attribute containers. It is also the job of a doctype to be able to read and decode the text stream in a record. For HTML, for example, this means decoding the HTML character entities. Some types may need to perform pre-processing and create an intermediate. SGML, for exmple, needs to be normalized. PDF needs to have its text rendered.
 
@@ -62,11 +61,11 @@ A doctype needs to parse a document into records. Frequently documents consist o
 
 During search the doctypes continue to have jobs. They must be able to read the documents and prepare fragments to be compared in a suitable manner. With HTML this means, among other things, with its HTML character entities decoded and text normalized. It is also responsible for retrieval of information (document, record or parts thereof) or what we call presentation.
 
-**Field Unitification (indexing/search)**
+### **Field Unitification (indexing/search)**
 
 Since the engine is designed to support a wide range of heterogenous documents and record formats a facility was developed to allow for name, resp. query path alignment. Defined by a configuration file, fieldnames (and paths) can to be mapped during indexing to alternative names. This is intended to handle the issue of semantically equivalent field (or path) contents having syntatically different names (or paths). It also allows one to skip fields (for example P=\<Ignore>). These settings may be defined unique to doctype, to doctype instance or to database (e.g. the search indexing target).
 
-**Query Engine (search)**
+### **Query Engine (search)**
 
 Queries to the engine are done by a number of means: 1) RPN expressions 2) Infix (algebraic) 3) Relevant feedback (a reference to a fragment) 4) so called smart plain language queries. Smart queries try to interpret the query if its RPN or Infix or maybe just some terms. The logic for handling just terms is as-if it first searched for a literal expression, if not then tying to find the terms in a common leaf node in a records DOM, if not then AND‘d (Intersection of sets), if not then OR‘d (Union).&#x20;
 
@@ -93,7 +92,7 @@ Since it is a true query language it is possible to write extremely ineffective 
 \
 
 
-**Ranking (search results)**
+### **Ranking (search results)**
 
 The set of elements (records) on a search response tends to be sorted by scores. There are a number of algorithms that tend to be used for scoring. The standard methods in the core engine are NoNormalization, CosineNormalization (Salton Tf-idf), MaxNormalization (weighted Cosine), LogNormalization (log cosine score), BytesNormalization (normalize frequency with a bias towards terms that are closer to one another) and CosineMetricNormalization. There is also normalization using a date bias (Newsrank).&#x20;
 
@@ -106,11 +105,11 @@ Scoring algorithms are user extendable as designed for customizations.
 
 Queries can also weight various matches or field results to give them more importance (or less). There are also methods to cluster or shift position in results ranking with hits (matches) that are closer to one another („magnitism“).
 
-**Presentation** (retrieval)
+### **Presentation** (retrieval)
 
 For presentation the engine uses something called “Record Syntax” to define the response syntax either through reconstruction, reconstitution or transformation. Like datatypes and doctypes it too is handled by an extensible registry. These are defined by internally registered OIDs. A ITU-T / ISO/IEC object identifier (OID) is an extensively used identification mechanism. It is the job of the DOCTYPE subsystem (using the doctype associated with the record whose data the response contains either partially or in full) to build the appropriate reponse as requested. It is typically built as a reconstruction using the indexed structure and addresses of content. This allows one to control the final reconstruction to exclude sensitive information that might have been in the original record but to be excluded from some presentations.
 
-**OIDs** (ITU-T / ISO/IEC object identifiers)
+### **OIDs** (ITU-T / ISO/IEC object identifiers)
 
 We use OIDs (Object Identifiers) throughout instead of ad-hoc names for a number of request and response features to allow for easier integration with compliant systems. Example: For PDF we have the octet stream: 1.2.840.10003.5.109.1 while for SUTRS (effectively plain structured text) we have 1.2.840.10003.5.101
 
@@ -127,7 +126,7 @@ The use of the Z39.50 OID space is for rational, practical and historical reason
 \
 
 
-**IB Query Language**&#x20;
+### **IB Query Language**&#x20;
 
 All parts of the query language are case insensitive apart from terms. Fields (paths) are case insensitive. While XML, for example, is case-sensitive, we are case insensitive. Should the same element name have different semantics (generally a very bad practice)  by case in the source it needs to be converted (e.g. with a prefix). &#x20;
 
@@ -176,7 +175,7 @@ Paths can be from the root ‘\’ (e.g. \\_record\metadata\\_title) or from any
 
 This is the most basic search. Example “design” to find “design” anywhere. Or title/design to find “design” just in title elements. Since paths are case-insensitive there is no difference between Title/design, tITle/design and title/design.
 
-**Term and field paths support “Glob” matching**
+#### **Term and field paths support “Glob” matching**
 
 We support left (with some limitations in terms) and right (without limitations) truncated search as well as a combination of \* and ? for glob matching. This can be universally applied to path (fieldname) and with some limitations to searchterm. These can be connected by more than a dozen binary as well as a good dozen unary relational operators.
 
@@ -205,7 +204,7 @@ For every hit we can also examine where it occurred. Example: Searching for&#x20
 
 &#x20;Example: PLAY\ACT\SCENE\SPEECH\LINE
 
-**RPN vs Infix**
+#### **RPN vs Infix**
 
 Internally all expressions are converted into a RPN (Reverse Polish Notation) and placed on stacks.
 
@@ -233,11 +232,11 @@ Since it is a true query language it is possible to write extremely ineffective 
 | out spot PEER                         | out PEER spot                        |
 | from/edz 'subject/"EU NGI0"' AND      | from/edz AND  'subject/"EU NGI0"'    |
 
-**Query Operators (IB Language)**
+#### **Query Operators (IB Language)**
 
 The re-Isearch engine has been designed to have an extremely rich and expressive logical collection of  operators. Some operators can, however, be quite expensive. The complement, for example, of a set with a single result in a large dataset is large. Search time is directly related to the time to build the result set.&#x20;
 
-**Binary Operators**
+#### **Binary Operators**
 
 | **Polymorphic Binary Operators** |                          |
 | -------------------------------- | ------------------------ |
@@ -294,7 +293,7 @@ Since the engine produces sets of result we can also combine two sets from diffe
 \
 
 
-**Unary Operators**
+#### **Unary Operators**
 
 | **Operator**            | **Sym**     | **Description**                                                                                                                                                                                                                                                                                                                           |
 | ----------------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -316,7 +315,7 @@ Since the engine produces sets of result we can also combine two sets from diffe
 \
 
 
-**Comparison to CQL**
+#### **Comparison to CQL**
 
 CQL query consist, like the IB language, of either a single search clause  or multiple search clauses connected by boolean operators. It may have a sort specification at the end, following the 'sortBy' keyword. In addition it may include prefix assignments which assign short names to context set identifiers.
 
@@ -330,7 +329,7 @@ CQL query consist, like the IB language, of either a single search clause  or mu
 \
 
 
-**Programming Languages**
+### **Programming Languages**
 
 Since the internal representation of a query is a RPN stack and we have a number of programming interfaces (C++, Python, Java, PHP, Tcl, etc.) we have the tremendous power to express and store what we wish. At current we don’t have a SQL or SPARQL interface but it should be relatively easy for a contributor to write in Python (or one of the other languages).
 
@@ -356,11 +355,10 @@ As one can see it is relatively straightforward to build alternative query langu
 
 ****
 
-Doctypes
+### Doctypes (old)
 
 This is an old map of the doctypes (not much has changed)
 
-\
 
 
 The current collection (June 2021):
@@ -405,7 +403,7 @@ Available Built-in Document Base Classes (v28.5):
 
 &#x20;           XML        XMLBASE        XPANDOC      YAHOOLIST
 
-External Base Classes ("Plugin Doctypes"):
+#### External Base Classes ("Plugin Doctypes"):
 
 &#x20; RTF:               // "Rich Text Format" (RTF) Plugin
 
@@ -435,10 +433,9 @@ External Base Classes ("Plugin Doctypes"):
 
 &#x20; ISOTEIA:           // ISOTEIA project (GILS Metadata) XML format locator records
 
-\
 
 
-**AUTODETECT**:
+#### **AUTODETECT**:
 
 Lets start off the with AUTODETECT type as it’s often the go-to default.  Class Tree:
 
@@ -450,35 +447,22 @@ Lets start off the with AUTODETECT type as it’s often the go-to default.  Clas
 
 AUTODETECT is a special kind of doctype that really isn't a doctype at all. Although it is installed from the viewpoint of  the engine as a doctype in the doctype registrary, it does not handle parsing or presentation and only serves to map and pass responsibility to other doctypes. It uses a complex combination of file contents and extension analysis to determine the suitable doctype for processing the file.
 
-\
 
 
 The identification algorithims and inference logic have been designed to be smart enough to provide a relatively fine grain identification. The analysis is based in large part upon content analysis in contrast to purely magic or file extension methods. The later are used as hints and not for the purpose of identification. These techniques allow the autodetector to distinguish between several different very similar doctypes (for example MEDLINE, FILMLINE and DVBLINE are all based upon the same basic colon syntax but with slightly different features). It allows one to index whole directory trees without having to worry about the selection of doctype. It can also detect many doctypes where there are, at current, no suitable doctype class available or binary files not probably intended for indexing (these include misc files from FrameMaker, SoftQuad Author/Editor, TeX/METAFONT, core files, binaries etc). At current ALL doctypes available are identified. For doctypes that handle the same document formats but for different functions ( eg. HTML, HTML-- and HTMLMETA) given that being logical does not mean it can read minds.  For these one must specify the document parser or the most general default parser would be chosen (eg. HTML for the entire class of HTML files).&#x20;
 
-\
-
-
 Should the document format not be recognized by the internal logic it then appeals to, should it have been built with it (its optional) libmagic. That library has a user editable magic file for identification. If the type is identified as some form of "text", viz. not as some binary or other format, then it is associated with the PLAINTEXT doctype.
-
-\
-
 
 Since it has proved accurate, robust and comfortable it is the default doctype.&#x20;
 
-**Options in .ini:**
+#### **Options in .ini:**
 
+```ini
+[General]
+Magic=<path>     # Path of optional magic file
+ParseInfo=[Y|N]  # Parse Info for binary files (like images)
 
-
-\[General]
-
-Magic=\<path>     # Path of optional magic file
-
-ParseInfo=\[Y|N]  # Parse Info for binary files (like images)
-
-
-
-\[Use]
-
-\<DoctypeClass>=\<DoctypeClassToUse> # example HTML=HTMLHEAD
-
-\<DoctypeClass>=NULL  # means don't index \<DoctypeClass> files
+[Use]
+<DoctypeClass>=<DoctypeClassToUse> # example HTML=HTMLHEAD
+<DoctypeClass>=NULL  # means don't index <DoctypeClass> files
+```
