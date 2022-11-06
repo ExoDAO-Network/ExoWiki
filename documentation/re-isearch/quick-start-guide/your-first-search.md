@@ -4,7 +4,7 @@
 
 <summary>Installation</summary>
 
-Make sure that re-Isearch is properly installed on your sytem. For detailied instructions, go to [installation.md](installation.md "mention").
+Follow [#installation](your-first-search.md#installation "mention").
 
 </details>
 

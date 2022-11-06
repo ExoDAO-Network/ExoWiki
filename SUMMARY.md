@@ -5,6 +5,7 @@
 * [💡 About](README.md)
 * [👥 Team](overview/team.md)
 * [🤝 Our Supporters](overview/our-supporters.md)
+* [📮 Contact Us](overview/contact-us.md)
 
 ## Documentation
 
@@ -14,8 +15,11 @@
     * [🎂 Your First Search](documentation/re-isearch/quick-start-guide/your-first-search.md)
   * [📖 Handbook](documentation/re-isearch/handbook/README.md)
     * [Intro](documentation/re-isearch/handbook/intro.md)
+    * [Installation (Advanced)](documentation/re-isearch/handbook/installation-advanced.md)
     * [Design Document](documentation/re-isearch/handbook/design-document.md)
-* [✨ ExoDAO](documentation/exodao.md)
+* [✨ ExoDAO](documentation/exodao/README.md)
+  * [Concept](documentation/exodao/concept/README.md)
+    * [ExoFuel](documentation/exodao/concept/exofuel.md)
 
 ***
 

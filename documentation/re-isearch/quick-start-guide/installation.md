@@ -1,7 +1,7 @@
 # ⬇ Installation
 
 {% hint style="danger" %}
-In this reduced guide we assume you have g++/gcc-10 installed and are running Ubuntu x86 64-bit. If you run into any problems when building the source or want to customize your installation, please refer to the [handbook](../handbook/ "mention") for further information.
+In this reduced guide we assume you have g++/gcc-10 installed and are running Ubuntu x86 64-bit. If you run into any problems when building the source or want to customize your installation, please refer to [installation-advanced.md](../handbook/installation-advanced.md "mention") for further information.
 {% endhint %}
 
 ### Prerequisites
@@ -45,3 +45,21 @@ Make
 ```
 
 </details>
+
+<details>
+
+<summary>(Optional) Build Plugins</summary>
+
+If you want to use plugins (e.g. for indexing PDFs or other (third party) doctypes), install them using
+
+```bash
+Make Plugins
+```
+
+</details>
+
+If your console didn't return any errors when building, you should be got to go. Test your installation by performing a search:
+
+{% content-ref url="your-first-search.md" %}
+[your-first-search.md](your-first-search.md)
+{% endcontent-ref %}
