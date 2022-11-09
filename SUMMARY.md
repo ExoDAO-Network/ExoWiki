@@ -19,6 +19,7 @@
     * [Design Document](documentation/re-isearch/handbook/design-document.md)
 * [✨ ExoDAO](documentation/exodao/README.md)
   * [Concept](documentation/exodao/concept.md)
+* [Pre-Demoday Demonstrator](documentation/pre-demoday-demonstrator.md)
 
 ***
 
