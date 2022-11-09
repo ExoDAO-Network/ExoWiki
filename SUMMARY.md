@@ -18,8 +18,7 @@
     * [Installation (Advanced)](documentation/re-isearch/handbook/installation-advanced.md)
     * [Design Document](documentation/re-isearch/handbook/design-document.md)
 * [✨ ExoDAO](documentation/exodao/README.md)
-  * [Concept](documentation/exodao/concept/README.md)
-    * [ExoFuel](documentation/exodao/concept/exofuel.md)
+  * [Concept](documentation/exodao/concept.md)
 
 ***
 
