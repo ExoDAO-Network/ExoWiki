@@ -1,6 +1,6 @@
 # Imprint / Impressum
 
-Association "ExoDAO Network" Switzerland
+Association "ExoDAO Network" Zurich, Switzerland
 
 E-Mail: contact@exodao.net
 
