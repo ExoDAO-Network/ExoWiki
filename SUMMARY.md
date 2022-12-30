@@ -18,8 +18,8 @@
     * [Installation (Advanced)](documentation/re-isearch/handbook/installation-advanced.md)
     * [Design Document](documentation/re-isearch/handbook/design-document.md)
 * [✨ ExoDAO](documentation/exodao/README.md)
-  * [Use re-Isearch in Python](documentation/exodao/use-re-isearch-in-python.md)
   * [Concept](documentation/exodao/concept.md)
+  * [Use re-Isearch in Python](documentation/exodao/use-re-isearch-in-python.md)
 
 ***
 
