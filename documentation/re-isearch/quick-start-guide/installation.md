@@ -53,7 +53,7 @@ make
 If you want to use plugins (e.g. for indexing PDFs or other (third party) doctypes), install them using
 
 ```bash
-make Plugins
+make plugins
 ```
 
 </details>
