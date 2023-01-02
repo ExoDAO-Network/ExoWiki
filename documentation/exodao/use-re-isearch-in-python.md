@@ -1,3 +1,7 @@
+---
+description: A Short Introduction
+---
+
 # Use re-Isearch in Python
 
 re-Isearch is implemented mainly in C / C++. We can create a Python Binding using [SWIG](https://www.swig.org) (_Simplified Wrapper and Interface Generator_).
@@ -101,8 +105,8 @@ if not pdb.IsDbCompatible():
   raise ValueError, "The specified database '%s' is not compatible with this version. Re-index!" % `junk`
 
 sentence =  "to be or not to be";
-#sentence = "Hate Christian OR"
-#sentence = "Hate Jew OR"
+#sentence = "Hate Christian OR";
+#sentence = "Hate Jew OR";
 
 squery = SQUERY(sentence);
 print squery;
@@ -115,7 +119,7 @@ print "Database ", junk, " has ", elements, " elements";
 
 total = 10;
 if elements > 0:
-    rset = pdb.VSearchSmart(query); # RPN Query
+    rset = pdb.VSearchSmart(query);
     print type(rset);
     print rset;
     total = rset.GetTotalEntries();
