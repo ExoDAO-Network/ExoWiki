@@ -62,7 +62,7 @@ This creates `PyIB.so`, which is a _shared object file_ that can be loaded into 
 
 ### Example
 
-Run this in a folder with _shakespeare.xml_ (can be found in `/re-Isearch/test/data`)
+Run this in a folder with _shakespeare.xml_ (can be found in `/re-Isearch/test/data`) to create an Index
 
 ```python
 import sys
@@ -86,4 +86,59 @@ if not pdb.Index() :
 
 pdb.AfterIndexing();
 ```
+
+To do an example search, now run the following script
+
+```python
+import sys
+import string
+from IB import *
+
+junk="/tmp/JUNK";
+pdb = IDB(junk);
+print "This is PyIB version %s/%s" % (string.split(sys.version)[0], pdb.GetVersionID());
+if not pdb.IsDbCompatible():
+  raise ValueError, "The specified database '%s' is not compatible with this version. Re-index!" % `junk`
+
+sentence =  "to be or not to be";
+#sentence = "Hate Christian OR"
+#sentence = "Hate Jew OR"
+
+squery = SQUERY(sentence);
+print squery;
+query = QUERY();
+query.SetSQUERY(squery);
+
+elements = pdb.GetTotalRecords();
+
+print "Database ", junk, " has ", elements, " elements";
+
+total = 10;
+if elements > 0:
+    rset = pdb.VSearchSmart(query); # RPN Query
+    print type(rset);
+    print rset;
+    total = rset.GetTotalEntries();
+    print "Searching for: ", query;
+    print "Got = ", total, " Records";
+    # Print the results....
+    for i in range(1,total+1):
+        result = rset.GetEntry(i);
+        area = pdb.Context(result, "____", "____") ;
+        datum = result.GetDate();
+
+        score  = result.GetScore();
+        hits   = result.GetHitTable();
+        print "[", i , "] ", rset.GetScaledScore(score, 100), " ", score, " ", pdb.Present(result, ELEMENT_Brief);
+        print "\tFormat: ", result.GetDoctype();
+        print "\tFile:", result.GetFullFileName(), "  [", result.GetRecordStart(), "-", result.GetRecordEnd(), "]";
+        print "\tDate: ", datum.RFCdate();
+        print "\tMatch: ", area;
+else:
+    print 'Empty Index!';
+
+pdb = None; # Delete
+```
+
+
 
