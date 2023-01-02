@@ -62,7 +62,7 @@ Now simply run
 make Python
 ```
 
-This creates `PyIB.so`, which is a _shared object file_ that can be loaded into your Python script.
+This creates the _shared object file_ `PyIB.so` and `IB.py` that can be loaded into your Python script.
 
 ### Example
 
