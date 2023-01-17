@@ -53,7 +53,7 @@ cd /re-Isearch/swig
 There, you can edit  `Makefile.py` to specify the Python version you are using in `PYVERSION`.&#x20;
 
 {% hint style="warning" %}
-Make sure you have the appropiate `python-dev` package installed, which provides the header files needed to run C / C++ code.
+Make sure you have the appropiate `python-dev` package installed, which provides the header files needed to run C / C++ code. As of now, only Python 2.xx are supported.
 {% endhint %}
 
 Now simply run
