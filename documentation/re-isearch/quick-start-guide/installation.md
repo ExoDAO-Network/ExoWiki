@@ -37,12 +37,17 @@ Go into the `build/` directory
 ```bash
 cd re-Isearch/build/
 ```
-
-Run the Makefile
-
+Remove old objects ;)
 ```bash
-make
+make clean
 ```
+Run the Makefile 
+Make sure that you are using the makefile for your OS!
+for example for Ubuntu:
+```bash
+make -f Makefile.ubuntu
+```
+
 
 </details>
 
