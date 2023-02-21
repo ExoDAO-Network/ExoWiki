@@ -13,8 +13,19 @@ Follow [#installation](your-first-search.md#installation "mention").
 <summary>Step 2</summary>
 
 In the binary directory (../bin/ from the prespective of the buiild/ directory) you'll find a number of command line tools.
-  <dl><li>Iindex</li><li>Isearch></li></dl>
+  <dl>
+    <li>Iindex</li>
+    <li>Isearch</li>
+    <li>...</li>
+  </dl>
   
+  The Iindex command is used to create indexes. 
+  
+  Example: Iindex -d /tmp/FOO shakespeare.xml
+  
+  will create an index called "FOO" in the /tmp directory containing the contents of the XML file shakespeare.xml
+  
+  The Iindex command has a lot of options. 
 
 </details>
 
