@@ -37,8 +37,7 @@ To search the FOO index use use the command line tool Isearch
   
   Isearch -d /tmp/FOO to be or not to be
   
-This will perform a "smart search" in the index defined in /tmp/FOO for the ordered words: to be or not to be
-
+This will perform a "smart search" in the index defined in /tmp/FOO for the ordered words: to be or not to be  
 
 </details>
 
@@ -46,7 +45,7 @@ This will perform a "smart search" in the index defined in /tmp/FOO for the orde
 
 <summary>Step 4</summary>
 
-
+The engine supports not just "smart search" but a number of other query languages as well as a large number of ranking functions. Please read the documentation for additional details.
 
 </details>
 
