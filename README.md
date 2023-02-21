@@ -8,7 +8,7 @@
 
 ## What is the Problem You Intend to Solve?
 
-Current internet search is dominated by Big Tech with their opaque ranking algorithms and advertisement based economic models. Search is about selling ads and collecting personal data and not finding and exploring information. This defines and shapes the narrative of who can see what as well as what remains invisible. The result: reinforced filter bubbles, polarization and a surveillance race.
+Current internet search is dominated by Big Tech with their opaque attention driven ranking algorithms driven by advertisements. Search is about selling ads and collecting personal data (under the guise of more effectively targetting ads) and not finding and exploring information. This defines and shapes the narrative of who can see what as well as what remains invisible. The result: reinforced filter bubbles, polarization and a surveillance race.
 
 ## Why Do You Think It Needs to be Solved?
 
