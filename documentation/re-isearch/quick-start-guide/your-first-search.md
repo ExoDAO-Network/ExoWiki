@@ -13,11 +13,11 @@ Follow [#installation](your-first-search.md#installation "mention").
 <summary>Step 2</summary>
 
 In the binary directory (../bin/ from the prespective of the buiild/ directory) you'll find a number of command line tools.
-  <dl>
+  <ul>
     <li>Iindex</li>
     <li>Isearch</li>
     <li>...</li>
-  </dl>
+  </ul>
   
   The Iindex command is used to create indexes. 
   
@@ -33,6 +33,11 @@ In the binary directory (../bin/ from the prespective of the buiild/ directory) 
 
 <summary>Step 3</summary>
 
+To search the FOO index use use the command line tool Isearch
+  
+  Isearch -d /tmp/FOO to be or not to be
+  
+This will perform a "smart search" in the index defined in /tmp/FOO for the ordered words: to be or not to be
 
 
 </details>
