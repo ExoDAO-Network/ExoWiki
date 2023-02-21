@@ -12,7 +12,9 @@ Follow [#installation](your-first-search.md#installation "mention").
 
 <summary>Step 2</summary>
 
-
+In the binary directory (../bin/ from the prespective of the buiild/ directory) you'll find a number of command line tools.
+  <dl><li>Iindex</li><li>Isearch></li></dl>
+  
 
 </details>
 
