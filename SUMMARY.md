@@ -20,7 +20,7 @@
 * [✨ ExoDAO](documentation/exodao/README.md)
   * [Concept](documentation/exodao/concept.md)
   * [Use re-Isearch in Python](documentation/exodao/use-re-isearch-in-python.md)
-  * [💣 Pre DemoDay Demo](documentation/exodao/pre-demoday-demo.md)
+  * [💣 DemoDay Demo](http://search.exodao.net/)
 
 ***
 
