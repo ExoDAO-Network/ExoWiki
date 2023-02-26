@@ -1,4 +1,4 @@
-# 👥 Team
+# 👥 Founders
 
 <figure><img src="../.gitbook/assets/Ole_Mueller.png" alt=""><figcaption><p>Ole Müller<a href="https://www.linkedin.com/in/olemueller/"> https://www.linkedin.com/in/olemueller/ </a><a href="https://github.com/busssard">https://github.com/busssard</a></p></figcaption></figure>
 
