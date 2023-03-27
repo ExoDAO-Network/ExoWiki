@@ -3,7 +3,7 @@
 ## Overview
 
 * [💡 About](README.md)
-* [👥 Team](overview/team.md)
+* [👥 Board](overview/team.md)
 * [🤝 Our Supporters](overview/our-supporters.md)
 * [📮 Contact Us](overview/contact-us.md)
 
