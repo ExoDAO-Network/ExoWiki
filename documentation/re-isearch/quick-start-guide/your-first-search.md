@@ -13,19 +13,22 @@ Follow [#installation](your-first-search.md#installation "mention").
 <summary>Step 2</summary>
 
 In the binary directory (../bin/ from the prespective of the buiild/ directory) you'll find a number of command line tools.
-  <ul>
-    <li>Iindex</li>
-    <li>Isearch</li>
-    <li>...</li>
-  </ul>
-  
-  The Iindex command is used to create indexes. 
-  
-  Example: Iindex -d /tmp/FOO shakespeare.xml
-  
-  will create an index called "FOO" in the /tmp directory containing the contents of the XML file shakespeare.xml
-  
-  The Iindex command has a lot of options. 
+
+* Iindex
+* Isearch
+* ...
+
+The Iindex command is used to create indexes.
+
+Example:
+
+```
+Iindex -d /tmp/FOO shakespeare.xml
+```
+
+will create an index called "FOO" in the /tmp directory containing the contents of the XML file shakespeare.xml
+
+The Iindex command has a lot of options.
 
 </details>
 
@@ -34,10 +37,12 @@ In the binary directory (../bin/ from the prespective of the buiild/ directory) 
 <summary>Step 3</summary>
 
 To search the FOO index use use the command line tool Isearch
-  
-  Isearch -d /tmp/FOO to be or not to be
-  
-This will perform a "smart search" in the index defined in /tmp/FOO for the ordered words: to be or not to be  
+
+```
+Isearch -d /tmp/FOO to be or not to be
+```
+
+This will perform a "smart search" in the index defined in /tmp/FOO for the ordered words: to be or not to be
 
 </details>
 
