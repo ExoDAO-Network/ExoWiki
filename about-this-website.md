@@ -1,6 +1,6 @@
 # About This Website
 
 {% hint style="danger" %}
-Similarly to ExoDAO, this website itself is a prototype. It is also [Open Source. ](https://github.com/ExoDAO-Network/Website)It is therefore a work-in-progress and you are welcome to [help us out](overview/contact-us.md).
+This documentation for ExoDAO is [Open Source](https://github.com/ExoDAO-Network/Website) and heavily work in progress. Feel free to help us out by [contacting us](overview/contact-us.md) or directly opening a pull request on [Github](https://github.com/ExoDAO-Network/Website).
 {% endhint %}
 
