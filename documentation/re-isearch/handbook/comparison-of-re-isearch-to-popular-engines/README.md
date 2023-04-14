@@ -133,5 +133,6 @@ Sphinx can be used either as a stand-alone server or as a storage engine ("Sphin
 
 ### Lucene
 
-
-
+{% content-ref url="lucene-vs.-re-isearch.md" %}
+[lucene-vs.-re-isearch.md](lucene-vs.-re-isearch.md)
+{% endcontent-ref %}
