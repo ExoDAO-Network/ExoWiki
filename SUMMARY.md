@@ -16,6 +16,8 @@
   * [📖 Handbook](documentation/re-isearch/handbook/README.md)
     * [Intro](documentation/re-isearch/handbook/intro.md)
     * [Installation (Advanced)](documentation/re-isearch/handbook/installation-advanced.md)
+    * [Comparison of re-Isearch to Popular Engines](documentation/re-isearch/handbook/comparison-of-re-isearch-to-popular-engines/README.md)
+      * [Lucene vs. re-Isearch](documentation/re-isearch/handbook/comparison-of-re-isearch-to-popular-engines/lucene-vs.-re-isearch.md)
     * [Design Document](documentation/re-isearch/handbook/design-document.md)
 * [✨ ExoDAO](documentation/exodao/README.md)
   * [Concept](documentation/exodao/concept.md)
