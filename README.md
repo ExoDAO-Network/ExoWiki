@@ -6,7 +6,12 @@
 >
 > [Sergey Brin and Lawrence Page (1998)](http://infolab.stanford.edu/\~backrub/google.html)
 
+## High level pitch
 {% embed url="https://www.youtube.com/watch?v=ad3IbOvujOI" %}
+
+## Deeper dive
+{% embed url="https://www.youtube.com/watch?v=9JNXgF7K2x0" %}
+
 
 ## What is the Problem You Intend to Solve?
 
